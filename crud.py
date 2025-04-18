@@ -1,6 +1,7 @@
 import json
 import os
 import utils
+import matplotlib.pyplot as plt
 
 ######## Create New Student ########
 def create_student():
@@ -130,3 +131,28 @@ def view_students():
     
     for student in students:
         print(f"Student ID: {student['student_id']}, Student Name: {student['student_name']}, Student Age: {student['student_age']}")
+
+
+######## Visualize Grade Distribution ##########
+def visualize_grade_distribution():
+    # 4. Visualize Grade Distribution using Matplotlib
+    # Load student data
+    student_data = utils.load_data_from_file()
+    grades = []
+
+    # Collect all grades from all students
+    for student in student_data["students"]:
+        grades.extend(student["grades"].values())
+
+    if not grades:
+        print("No grades available to visualize.")
+        return
+
+    # Plot histogram
+    plt.hist(grades, bins=range(0, 101, 10), edgecolor='black')
+    plt.xlabel('Grades')
+    plt.ylabel('Frequency')
+    plt.title('Grade Distribution')
+    plt.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.tight_layout()
+    plt.show()

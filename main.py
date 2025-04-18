@@ -4,9 +4,10 @@ import crud
 # Options:
 options = {
     "1": "Create new student",
-    "2": "Update student grades",
+    "2": "Update student",
     "3": "Calculate average grade per student",
-    "4": "Exit"
+    "4": "Visualize Grade distribution",
+    "5": "Exit"
 }
 
 while True:
@@ -21,7 +22,7 @@ while True:
     # Get user input
     on = input("Enter option: ").strip()
 
-    if on == "4":
+    if on == "5":
         print("Exiting program...")
         break
     elif on == "1":
@@ -30,6 +31,8 @@ while True:
         crud.update_student()
     elif on == "3":
         crud.calculate_average_grade()
+    elif on == "4":
+        crud.visualize_grade_distribution()
     else:
         print("Invalid option. Please try again.")
 
