@@ -6,11 +6,13 @@ options = {
     "1": "Create new student",
     "2": "Update student grades",
     "3": "Calculate average grade per student",
-    "4": "View all students",
-    "5": "Exit"
+    "4": "Exit"
 }
 
 while True:
+    print("-" * 50)
+    crud.view_students()
+    print("-" * 50)
     # Print options
     print("\nPlease choose an option:")
     for key, value in options.items():
@@ -19,7 +21,7 @@ while True:
     # Get user input
     on = input("Enter option: ").strip()
 
-    if on == "5":
+    if on == "4":
         print("Exiting program...")
         break
     elif on == "1":
@@ -28,8 +30,6 @@ while True:
         crud.update_student()
     elif on == "3":
         crud.calculate_average_grade()
-    elif on == "4":
-        crud.view_students()
     else:
         print("Invalid option. Please try again.")
 

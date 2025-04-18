@@ -1,37 +1,55 @@
 {
     "students": [
         {
-            "student_id": "TC123",
+            "student_id": 1,
+            "student_name": "Chris Miracle",
+            "student_age": 25,
+            "grades": {
+                "maths": 99,
+                "science": 99,
+                "english": 99,
+                "history": 100
+            },
+            "attendance": {
+                "days_present": 20,
+                "days_absent": 10
+            },
+            "remarks": "Good student",
+            "gpa": 99.25
+        },
+        {
+            "student_id": 2,
             "student_name": "Cheredi Amugo",
             "student_age": 23,
             "grades": {
                 "maths": 99,
                 "science": 99,
                 "english": 99,
-                "history": 89
-            }
-        },
-        {
-            "student_id": "CM123",
-            "student_name": "Chris Miracle",
-            "student_age": 25,
-            "grades": {
-                "maths": 99,
-                "science": 89,
-                "english": 99,
                 "history": 99
-            }
+            },
+            "attendance": {
+                "days_present": 28,
+                "days_absent": 2
+            },
+            "remarks": "Great Student",
+            "gpa": 99.0
         },
         {
-            "student_id": "JK123",
+            "student_id": 3,
             "student_name": "Jacob Kish",
             "student_age": 29,
             "grades": {
-                "maths": 99,
-                "science": 98,
-                "english": 99,
-                "history": 89
-            }
+                "maths": 89,
+                "science": 88,
+                "english": 90,
+                "history": 100
+            },
+            "attendance": {
+                "days_present": 15,
+                "days_absent": 15
+            },
+            "remarks": "Awesome Student",
+            "gpa": 91.75
         }
     ]
 }

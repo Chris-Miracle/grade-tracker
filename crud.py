@@ -1,5 +1,6 @@
 import json
 import os
+import utils
 
 ######## Create New Student ########
 def create_student():
@@ -14,7 +15,7 @@ def create_student():
         student_data = {"students": []}
 
     # 1. Create new Student
-    student_id = input("Enter student id: ").strip()
+    student_id = utils.create_student_id(student_data)
     student_name = input("Enter student name: ").strip()
     student_age = int(input("Enter student age: ").strip())
 
@@ -23,6 +24,12 @@ def create_student():
     science_grade = int(input("Enter science grade: ").strip())
     english_grade = int(input("Enter english grade: ").strip())
     history_grade = int(input("Enter history grade: ").strip())
+    attendance_days_present = int(input("Enter days present: ").strip())
+    attendance_days_absent = int(input("Enter days absent: ").strip())
+    remarks = input("Enter remarks: ").strip()
+
+    # Calculate GPA
+    gpa = utils.calculate_gpa(maths_grade, science_grade, english_grade, history_grade)
 
     # Create student dictionary
     student_data['students'].append({
@@ -34,8 +41,17 @@ def create_student():
             "science": science_grade,
             "english": english_grade,
             "history": history_grade
-        }
+        },
+        "attendance": {
+            "days_present": attendance_days_present,
+            "days_absent": attendance_days_absent
+        },
+        "remarks": remarks,
+        "gpa" : round(gpa, 2)
     })
+
+    # Sort Students by GPA
+    student_data['students'] = sorted(student_data['students'], key=lambda x: x['gpa'], reverse=True)
 
     # Convert to JSON and Save back to file
     with open("data/student_data.json", "w") as file:
@@ -51,24 +67,40 @@ def update_student():
     # Try to find the student
     student_found = False
 
-    student_data = load_data_from_file()
+    student_data = utils.load_data_from_file()
 
     for student in student_data["students"]:
         if str(student["student_id"]) == student_id:
             student_found = True
             print(f"Student found: {student['student_name']} ({student['student_age']} yrs old)")
 
-            option = input("What do you want to update? Grades(1), Personal Info(2), Both(3): ").strip()
+            option = input("What do you want to update? Personal Info(1), Grades(2), Attendance(3), Remarks(4), All(5): ").strip()
 
-            if option in ["2", "3"]:
+            if option in ["1", "5"]:
                 student["student_name"] = input("Enter new student name: ").strip()
                 student["student_age"] = int(input("Enter new student age: ").strip())
 
-            if option in ["1", "3"]:
+            if option in ["2", "5"]:
                 student["grades"]["maths"] = int(input("Enter maths grade: ").strip())
                 student["grades"]["science"] = int(input("Enter science grade: ").strip())
                 student["grades"]["english"] = int(input("Enter english grade: ").strip())
                 student["grades"]["history"] = int(input("Enter history grade: ").strip())
+                student["gpa"] = round(utils.calculate_gpa(student["grades"]["maths"], student["grades"]["science"], student["grades"]["english"], student["grades"]["history"]), 2)
+
+            if option in ["3", "5"]:
+                student["attendance"]["days_present"] = int(input("Enter days present: ").strip())
+                student["attendance"]["days_absent"] = int(input("Enter days absent: ").strip())
+
+            if option in ["4", "5"]:
+                student["remarks"] = input("Enter remarks: ").strip()
+                
+            # Sort Students by GPA
+            student_data['students'] = sorted(student_data['students'], key=lambda x: x['gpa'], reverse=True)
+
+            # Save the updated data back to the file
+            with open("data/student_data.json", "w") as file:
+                json.dump(student_data, file, indent=4)
+                break
 
             print("\n Student updated successfully!")
             print(f"ID: {student['student_id']} | Name: {student['student_name']} | Age: {student['student_age']}")
@@ -80,7 +112,7 @@ def update_student():
 ########## Calculate Average Grade ##########
 def calculate_average_grade():
     # 3. Calculate Average Grade Per Subject
-    student_data = load_data_from_file()
+    student_data = utils.load_data_from_file()
     for student in student_data["students"]:
         grades = student["grades"]
         average_grade = sum(grades.values()) / len(grades)
@@ -88,18 +120,13 @@ def calculate_average_grade():
 
 ########## View Students ##########
 def view_students():
-    # 4. View All Students
-    student_data = load_data_from_file()
-    for student in student_data["students"]:
-        print(f"Student ID: {student['student_id']}, Student Name: {student['student_name']}, Student Age: {student['student_age']}")
+    # View All Students
+    student_data = utils.load_data_from_file()
+    students = student_data["students"]
 
-######## Load Data From File ##########
-def load_data_from_file():
-    try:
-        with open("data/student_data.json", "r") as file:
-            student_data_json = file.read()
-            return json.loads(student_data_json)
-    except FileNotFoundError:
-        return {"students": []}
+    if not students:
+        print("No students in the system.")
+        return
     
-
+    for student in students:
+        print(f"Student ID: {student['student_id']}, Student Name: {student['student_name']}, Student Age: {student['student_age']}")
